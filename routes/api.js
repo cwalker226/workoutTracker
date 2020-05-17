@@ -13,10 +13,19 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.get("/api/workouts/range", (req, res) => {
-
+  Workout.find({})
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.status(400).json(err);
+    });
 });
 
 router.put("/api/workouts/:id", (req, res) => {
+  const workout = new Workout();
+  workout.calcDuration(req.params.id, req.body);
+
   Workout.findByIdAndUpdate(req.params.id, { $push: { exercises: req.body } }, { new: true, runValidators: true }
         ).then(dbWorkout => {
           res.json(dbWorkout);
@@ -27,7 +36,6 @@ router.put("/api/workouts/:id", (req, res) => {
 });
 
 router.post("/api/workouts", ({body}, res) => {
-  console.log("body", body);
   Workout.create(body)
     .then(dbWorkout => {
       res.json(dbWorkout);
