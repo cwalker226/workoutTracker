@@ -191,9 +191,10 @@ function duration(data) {
   let durations = [];
 
   data.forEach(workout => {
-    workout.exercises.forEach(exercise => {
-      durations.push(exercise.duration);
-    });
+    // workout.exercises.forEach(exercise => {
+    //   durations.push(exercise.duration);
+    // });
+    durations.push(workout.totalDuration);
   });
 
   return durations;
@@ -203,9 +204,15 @@ function calculateTotalWeight(data) {
   let total = [];
 
   data.forEach(workout => {
-    workout.exercises.forEach(exercise => {
-      total.push(exercise.weight);
-    });
+      let workoutTotal = 0;
+      workout.exercises.forEach(exercise => {
+        console.log("Type", exercise.type);
+        if (exercise.type === "resistance") {
+          workoutTotal = workoutTotal + exercise.weight;
+        }
+      });
+      console.log("Workout Tot", workoutTotal);
+      total.push(workoutTotal);
   });
 
   return total;
